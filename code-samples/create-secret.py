@@ -1,4 +1,8 @@
 # Databricks notebook source
+# /// script
+# [tool.databricks.environment]
+# environment_version = "5"
+# ///
 import requests
 
 # Fetch current workspace URL and authentication token automatically
@@ -29,7 +33,7 @@ headers = {"Authorization": f"Bearer {token}"}
 payload = {
     "scope": "conn-db",
     "key": "cnn-mongodb-sampleflix",
-    "string_value": "mongodb://root:SENHA_REMOVIDA@167.88.45.227:27017/?directConnection=true"
+    "string_value": "<PREENCHER_MANUALMENTE>"
 }
 
 response = requests.post(f"{instance}/api/2.0/secrets/put", headers=headers, json=payload)

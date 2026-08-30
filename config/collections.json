@@ -1,0 +1,67 @@
+{
+  "database": "sample_mflix",
+  "mongo_secret_scope": "conn-db",
+  "mongo_secret_key": "cnn-mongodb-sampleflix",
+
+  "catalog": "meu_catalog",
+  "landing_schema": "landing",
+  "landing_volume": "mongo",
+  "bronze_schema": "bronze",
+  "control_table": "meu_catalog.bronze.control_ingestion_log",
+
+  "batch_size": 2000,
+
+  "reconciliation_threshold_pct_default": 1.0,
+  "_comentario_threshold": "threshold calibrado por criticidade: 0% nas full-load (users/theaters/sessions/embedded_movies -- lidas inteiras, nao ha motivo pra divergir) e 0.5% nas incrementais (movies/comments). Cada item de 'collections' define o proprio 'reconciliation_threshold_pct'; o valor acima e so o fallback se algum item nao especificar.",
+
+  "collections": [
+    {
+      "name": "users",
+      "mode": "full",
+      "watermark_field": null,
+      "watermark_type": null,
+      "projection": {"password": 0},
+      "reconciliation_threshold_pct": 0.0
+    },
+    {
+      "name": "theaters",
+      "mode": "full",
+      "watermark_field": null,
+      "watermark_type": null,
+      "projection": null,
+      "reconciliation_threshold_pct": 0.0
+    },
+    {
+      "name": "sessions",
+      "mode": "full",
+      "watermark_field": null,
+      "watermark_type": null,
+      "projection": {"jwt": 0},
+      "reconciliation_threshold_pct": 0.0
+    },
+    {
+      "name": "embedded_movies",
+      "mode": "full",
+      "watermark_field": null,
+      "watermark_type": null,
+      "projection": {"plot_embedding": 0},
+      "reconciliation_threshold_pct": 0.0
+    },
+    {
+      "name": "movies",
+      "mode": "incremental",
+      "watermark_field": "lastupdated",
+      "watermark_type": "string",
+      "projection": null,
+      "reconciliation_threshold_pct": 0.5
+    },
+    {
+      "name": "comments",
+      "mode": "incremental",
+      "watermark_field": "date",
+      "watermark_type": "date",
+      "projection": null,
+      "reconciliation_threshold_pct": 0.5
+    }
+  ]
+}
